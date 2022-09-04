@@ -1,7 +1,7 @@
 use pulldown_cmark::{Parser, html::push_html};
 
 #[tokio::main]
-async fn main() {
+async fn main() -> anyhow::Result<()> {
     let markdown = "Hello, world!";
     let parser = Parser::new(markdown);
 
@@ -24,4 +24,6 @@ async fn main() {
     ");
 
     println!("{}", html);
+
+    Ok(())
 }
