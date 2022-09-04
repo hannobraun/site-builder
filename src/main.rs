@@ -1,3 +1,5 @@
+use std::fmt::Write;
+
 use pulldown_cmark::{Parser, html::push_html};
 
 #[tokio::main]
@@ -8,7 +10,9 @@ async fn main() -> anyhow::Result<()> {
     let mut html_from_markdown = String::new();
     push_html(&mut html_from_markdown, parser);
 
-    let html = format!("\
+    let mut html = String::new();
+
+    write!(html, "\
 <!DOCTYPE html>
 <html lang=\"en\">
     <head>
@@ -21,7 +25,7 @@ async fn main() -> anyhow::Result<()> {
         {html_from_markdown}
     </body>
 </html>\
-    ");
+    ")?;
 
     println!("{}", html);
 
