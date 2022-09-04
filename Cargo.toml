@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 pulldown-cmark = "*"
+
+[dependencies.tokio]
+version = "*"
+features = ["full"]
