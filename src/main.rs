@@ -1,6 +1,7 @@
 use pulldown_cmark::{Parser, html::push_html};
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let markdown = "Hello, world!";
     let parser = Parser::new(markdown);
 
