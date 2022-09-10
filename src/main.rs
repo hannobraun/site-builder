@@ -1,6 +1,7 @@
 use std::fmt::Write;
 
 use pulldown_cmark::{Parser, html::push_html};
+use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
@@ -27,7 +28,7 @@ async fn main() -> anyhow::Result<()> {
 </html>\
     ")?;
 
-    println!("{}", html);
+    File::create("target/output.html").await?.write_all(html.as_bytes()).await?;
 
     Ok(())
 }
