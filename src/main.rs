@@ -1,6 +1,5 @@
-use std::fmt::Write;
-
 use pulldown_cmark::{html::push_html, Parser};
+use tera::{Context, Tera};
 use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
@@ -11,25 +10,11 @@ async fn main() -> anyhow::Result<()> {
     let mut html_from_markdown = String::new();
     push_html(&mut html_from_markdown, parser);
 
-    let mut html = String::new();
+    let mut context = Context::new();
+    context.insert("content", &html_from_markdown);
 
-    write!(
-        html,
-        "\
-<!DOCTYPE html>
-<html lang=\"en\">
-    <head>
-        <meta charset=\"UTF-8\" />
-        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />
-
-        <title>Hello, world!</title>
-    </head>
-    <body>
-        {html_from_markdown}
-    </body>
-</html>\
-    "
-    )?;
+    let tera = Tera::new("templates/**")?;
+    let html = tera.render("base.html", &context)?;
 
     File::create("target/output.html")
         .await?
