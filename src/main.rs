@@ -1,6 +1,6 @@
 use std::fmt::Write;
 
-use pulldown_cmark::{Parser, html::push_html};
+use pulldown_cmark::{html::push_html, Parser};
 use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
@@ -13,7 +13,9 @@ async fn main() -> anyhow::Result<()> {
 
     let mut html = String::new();
 
-    write!(html, "\
+    write!(
+        html,
+        "\
 <!DOCTYPE html>
 <html lang=\"en\">
     <head>
@@ -26,9 +28,13 @@ async fn main() -> anyhow::Result<()> {
         {html_from_markdown}
     </body>
 </html>\
-    ")?;
+    "
+    )?;
 
-    File::create("target/output.html").await?.write_all(html.as_bytes()).await?;
+    File::create("target/output.html")
+        .await?
+        .write_all(html.as_bytes())
+        .await?;
 
     Ok(())
 }
