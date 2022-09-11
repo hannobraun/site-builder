@@ -1,11 +1,19 @@
 use pulldown_cmark::{html::push_html, Parser};
 use tera::{Context, Tera};
-use tokio::{fs::File, io::AsyncWriteExt};
+use tokio::{
+    fs::File,
+    io::{AsyncReadExt, AsyncWriteExt},
+};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let markdown = "Hello, world!";
-    let parser = Parser::new(markdown);
+    let mut markdown = String::new();
+    File::open("markdown/content.md")
+        .await?
+        .read_to_string(&mut markdown)
+        .await?;
+
+    let parser = Parser::new(&markdown);
 
     let mut html_from_markdown = String::new();
     push_html(&mut html_from_markdown, parser);
