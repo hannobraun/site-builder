@@ -1,3 +1,5 @@
+use std::path::Path;
+
 use pulldown_cmark::{html::push_html, Parser};
 use tera::{Context, Tera};
 use tokio::{
@@ -24,7 +26,8 @@ async fn main() -> anyhow::Result<()> {
     let tera = Tera::new("templates/**")?;
     let html = tera.render("base.html", &context)?;
 
-    File::create("target/output.html")
+    let output_file = Path::new("target/output.html").canonicalize()?;
+    File::create(&output_file)
         .await?
         .write_all(html.as_bytes())
         .await?;
