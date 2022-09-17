@@ -32,5 +32,8 @@ async fn main() -> anyhow::Result<()> {
         .write_all(html.as_bytes())
         .await?;
 
+    let output_url = format!("file://{}", output_file.display());
+    webbrowser::open(&output_url)?;
+
     Ok(())
 }
