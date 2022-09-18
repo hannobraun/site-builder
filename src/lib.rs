@@ -2,7 +2,10 @@ use std::path::Path;
 
 use pulldown_cmark::{html::push_html, Parser};
 use tera::{Context, Tera};
-use tokio::{fs::File, io::AsyncReadExt};
+use tokio::{
+    fs::File,
+    io::{AsyncReadExt, AsyncWriteExt},
+};
 
 pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
     let mut markdown = String::new();
@@ -31,4 +34,20 @@ pub async fn render_template(
     let html = tera.render(name, &context)?;
 
     Ok(html)
+}
+
+pub async fn write_html(
+    file: impl AsRef<Path>,
+    html: &str,
+) -> anyhow::Result<()> {
+    let output_file = file.as_ref().canonicalize()?;
+    File::create(&output_file)
+        .await?
+        .write_all(html.as_bytes())
+        .await?;
+
+    let output_url = format!("file://{}", output_file.display());
+    webbrowser::open(&output_url)?;
+
+    Ok(())
 }
