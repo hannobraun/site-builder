@@ -19,7 +19,11 @@ pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
     Ok(html)
 }
 
-pub async fn render_template(dir: &str, name: &str, content: &str) -> anyhow::Result<String> {
+pub async fn render_template(
+    dir: &str,
+    name: &str,
+    content: &str,
+) -> anyhow::Result<String> {
     let mut context = Context::new();
     context.insert("content", &content);
 
