@@ -12,8 +12,8 @@ pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
 
     let parser = Parser::new(&markdown);
 
-    let mut html_from_markdown = String::new();
-    push_html(&mut html_from_markdown, parser);
+    let mut html = String::new();
+    push_html(&mut html, parser);
 
-    Ok(html_from_markdown)
+    Ok(html)
 }
