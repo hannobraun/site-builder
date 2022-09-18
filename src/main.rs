@@ -1,18 +1,12 @@
 use std::path::Path;
 
-use site_builder::parse_markdown;
-use tera::{Context, Tera};
+use site_builder::{parse_markdown, render_template};
 use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
     let content = parse_markdown("markdown/content.md").await?;
-
-    let mut context = Context::new();
-    context.insert("content", &content);
-
-    let tera = Tera::new("templates/**")?;
-    let html = tera.render("base.html", &context)?;
+    let html = render_template("templates/**", "base.html", &content).await?;
 
     let output_file = Path::new("target/output.html").canonicalize()?;
     File::create(&output_file)
