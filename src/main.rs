@@ -1,24 +1,12 @@
 use std::path::Path;
 
-use pulldown_cmark::{html::push_html, Parser};
+use site_builder::parse_markdown;
 use tera::{Context, Tera};
-use tokio::{
-    fs::File,
-    io::{AsyncReadExt, AsyncWriteExt},
-};
+use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let mut markdown = String::new();
-    File::open("markdown/content.md")
-        .await?
-        .read_to_string(&mut markdown)
-        .await?;
-
-    let parser = Parser::new(&markdown);
-
-    let mut html_from_markdown = String::new();
-    push_html(&mut html_from_markdown, parser);
+    let html_from_markdown = parse_markdown("markdown/content.md").await?;
 
     let mut context = Context::new();
     context.insert("content", &html_from_markdown);
