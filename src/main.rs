@@ -6,10 +6,10 @@ use tokio::{fs::File, io::AsyncWriteExt};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    let html_from_markdown = parse_markdown("markdown/content.md").await?;
+    let content = parse_markdown("markdown/content.md").await?;
 
     let mut context = Context::new();
-    context.insert("content", &html_from_markdown);
+    context.insert("content", &content);
 
     let tera = Tera::new("templates/**")?;
     let html = tera.render("base.html", &context)?;
