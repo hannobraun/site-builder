@@ -1,8 +1,6 @@
 pub mod html;
 pub mod markdown;
 
-use std::path::Path;
-
 use html::Html;
 use tera::{Context, Tera};
 
@@ -18,13 +16,4 @@ pub async fn render_template(
     let html = tera.render(name, &context)?;
 
     Ok(Html::from_string(html))
-}
-
-pub async fn write_html(
-    path: impl AsRef<Path>,
-    html: &Html,
-) -> anyhow::Result<()> {
-    let html_file = html.write_to_file(path).await?;
-    html_file.open_in_browser()?;
-    Ok(())
 }
