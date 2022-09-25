@@ -3,7 +3,7 @@ pub mod markdown;
 
 use std::path::Path;
 
-use html::Html;
+use html::{Html, HtmlFile};
 use tera::{Context, Tera};
 use tokio::{fs::File, io::AsyncWriteExt};
 
@@ -26,12 +26,13 @@ pub async fn write_html(
     html: &Html,
 ) -> anyhow::Result<()> {
     let output_path = path.as_ref().canonicalize()?;
-    File::create(&output_path)
+    let html_file = HtmlFile(output_path);
+    File::create(&html_file.0)
         .await?
         .write_all(html.as_str().as_bytes())
         .await?;
 
-    let output_url = format!("file://{}", output_path.display());
+    let output_url = format!("file://{}", html_file.0.display());
     webbrowser::open(&output_url)?;
 
     Ok(())

@@ -1,3 +1,5 @@
+use std::path::PathBuf;
+
 pub struct Html(String);
 
 impl Html {
@@ -9,3 +11,5 @@ impl Html {
         &self.0
     }
 }
+
+pub struct HtmlFile(pub PathBuf);
