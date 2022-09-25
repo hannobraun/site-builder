@@ -17,8 +17,8 @@ impl Html {
         &self,
         path: impl AsRef<Path>,
     ) -> anyhow::Result<HtmlFile> {
-        let html_file = HtmlFile::create(self, path).await?;
-        Ok(html_file)
+        let file = HtmlFile::create(self, path).await?;
+        Ok(file)
     }
 }
 
