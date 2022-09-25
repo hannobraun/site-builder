@@ -1,4 +1,4 @@
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub struct Html(String);
 
@@ -13,3 +13,9 @@ impl Html {
 }
 
 pub struct HtmlFile(pub PathBuf);
+
+impl HtmlFile {
+    pub fn path(&self) -> &Path {
+        &self.0
+    }
+}
