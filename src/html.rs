@@ -42,4 +42,10 @@ impl HtmlFile {
     pub fn path(&self) -> &Path {
         &self.0
     }
+
+    pub fn open_in_browser(&self) -> anyhow::Result<()> {
+        let output_url = format!("file://{}", self.path().display());
+        webbrowser::open(&output_url)?;
+        Ok(())
+    }
 }

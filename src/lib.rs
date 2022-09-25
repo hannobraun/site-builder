@@ -25,9 +25,6 @@ pub async fn write_html(
     html: &Html,
 ) -> anyhow::Result<()> {
     let html_file = html.write_to_file(path).await?;
-
-    let output_url = format!("file://{}", html_file.path().display());
-    webbrowser::open(&output_url)?;
-
+    html_file.open_in_browser()?;
     Ok(())
 }
