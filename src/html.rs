@@ -15,6 +15,11 @@ impl Html {
 pub struct HtmlFile(pub PathBuf);
 
 impl HtmlFile {
+    pub fn from_path(path: impl AsRef<Path>) -> anyhow::Result<Self> {
+        let path = path.as_ref().canonicalize()?;
+        Ok(Self(path))
+    }
+
     pub fn path(&self) -> &Path {
         &self.0
     }

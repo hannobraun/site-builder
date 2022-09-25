@@ -25,8 +25,7 @@ pub async fn write_html(
     path: impl AsRef<Path>,
     html: &Html,
 ) -> anyhow::Result<()> {
-    let output_path = path.as_ref().canonicalize()?;
-    let html_file = HtmlFile(output_path);
+    let html_file = HtmlFile::from_path(path)?;
     File::create(html_file.path())
         .await?
         .write_all(html.as_str().as_bytes())
