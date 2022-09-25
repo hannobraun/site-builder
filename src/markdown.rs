@@ -25,9 +25,3 @@ impl Markdown {
         Ok(html)
     }
 }
-
-pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
-    let markdown = Markdown::read(path).await?;
-    let html = markdown.parse().await?;
-    Ok(html)
-}
