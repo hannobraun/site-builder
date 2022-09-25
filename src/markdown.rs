@@ -1,16 +1,26 @@
 use std::path::Path;
 
-use pulldown_cmark::{Parser, html::push_html};
+use pulldown_cmark::{html::push_html, Parser};
 use tokio::{fs::File, io::AsyncReadExt};
 
-pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
-    let mut markdown = String::new();
-    File::open(path)
-        .await?
-        .read_to_string(&mut markdown)
-        .await?;
+pub struct Markdown(String);
 
-    let parser = Parser::new(&markdown);
+impl Markdown {
+    pub async fn read(path: impl AsRef<Path>) -> anyhow::Result<Self> {
+        let mut markdown = String::new();
+        File::open(path)
+            .await?
+            .read_to_string(&mut markdown)
+            .await?;
+
+        Ok(Self(markdown))
+    }
+}
+
+pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
+    let markdown = Markdown::read(path).await?;
+
+    let parser = Parser::new(&markdown.0);
 
     let mut html = String::new();
     push_html(&mut html, parser);
