@@ -3,9 +3,8 @@ pub mod markdown;
 
 use std::path::Path;
 
-use html::{Html, HtmlFile};
+use html::Html;
 use tera::{Context, Tera};
-use tokio::{fs::File, io::AsyncWriteExt};
 
 pub async fn render_template(
     dir: &str,
@@ -25,11 +24,7 @@ pub async fn write_html(
     path: impl AsRef<Path>,
     html: &Html,
 ) -> anyhow::Result<()> {
-    let html_file = HtmlFile::from_path(path)?;
-    File::create(html_file.path())
-        .await?
-        .write_all(html.as_str().as_bytes())
-        .await?;
+    let html_file = html.write_to_file(path).await?;
 
     let output_url = format!("file://{}", html_file.path().display());
     webbrowser::open(&output_url)?;

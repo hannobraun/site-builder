@@ -1,5 +1,7 @@
 use std::path::{Path, PathBuf};
 
+use tokio::{fs::File, io::AsyncWriteExt};
+
 pub struct Html(String);
 
 impl Html {
@@ -9,6 +11,18 @@ impl Html {
 
     pub fn as_str(&self) -> &str {
         &self.0
+    }
+
+    pub async fn write_to_file(
+        &self,
+        path: impl AsRef<Path>,
+    ) -> anyhow::Result<HtmlFile> {
+        let html_file = HtmlFile::from_path(path)?;
+        File::create(html_file.path())
+            .await?
+            .write_all(self.as_str().as_bytes())
+            .await?;
+        Ok(html_file)
     }
 }
 
