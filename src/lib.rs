@@ -1,26 +1,9 @@
+pub mod markdown;
+
 use std::path::Path;
 
-use pulldown_cmark::{html::push_html, Parser};
 use tera::{Context, Tera};
-use tokio::{
-    fs::File,
-    io::{AsyncReadExt, AsyncWriteExt},
-};
-
-pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
-    let mut markdown = String::new();
-    File::open(path)
-        .await?
-        .read_to_string(&mut markdown)
-        .await?;
-
-    let parser = Parser::new(&markdown);
-
-    let mut html = String::new();
-    push_html(&mut html, parser);
-
-    Ok(html)
-}
+use tokio::{fs::File, io::AsyncWriteExt};
 
 pub async fn render_template(
     dir: &str,

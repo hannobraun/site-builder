@@ -1,4 +1,4 @@
-use site_builder::{parse_markdown, render_template, write_html};
+use site_builder::{markdown::parse_markdown, render_template, write_html};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
