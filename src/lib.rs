@@ -25,13 +25,13 @@ pub async fn write_html(
     path: impl AsRef<Path>,
     html: &Html,
 ) -> anyhow::Result<()> {
-    let output_file = path.as_ref().canonicalize()?;
-    File::create(&output_file)
+    let output_path = path.as_ref().canonicalize()?;
+    File::create(&output_path)
         .await?
         .write_all(html.as_str().as_bytes())
         .await?;
 
-    let output_url = format!("file://{}", output_file.display());
+    let output_url = format!("file://{}", output_path.display());
     webbrowser::open(&output_url)?;
 
     Ok(())
