@@ -23,12 +23,12 @@ pub async fn render_template(
 
 pub async fn write_html(
     file: impl AsRef<Path>,
-    html: &str,
+    html: &Html,
 ) -> anyhow::Result<()> {
     let output_file = file.as_ref().canonicalize()?;
     File::create(&output_file)
         .await?
-        .write_all(html.as_bytes())
+        .write_all(html.as_str().as_bytes())
         .await?;
 
     let output_url = format!("file://{}", output_file.display());
