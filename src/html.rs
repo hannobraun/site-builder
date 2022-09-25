@@ -1,4 +1,4 @@
-pub struct Html(pub String);
+pub struct Html(String);
 
 impl Html {
     pub fn from_string(html: String) -> Self {
