@@ -3,6 +3,8 @@ use std::path::Path;
 use pulldown_cmark::{html::push_html, Parser};
 use tokio::{fs::File, io::AsyncReadExt};
 
+use crate::html::Html;
+
 pub struct Markdown(String);
 
 impl Markdown {
@@ -16,12 +18,12 @@ impl Markdown {
         Ok(Self(markdown))
     }
 
-    pub async fn parse(&self) -> anyhow::Result<String> {
+    pub async fn parse(&self) -> anyhow::Result<Html> {
         let parser = Parser::new(&self.0);
 
         let mut html = String::new();
         push_html(&mut html, parser);
 
-        Ok(html)
+        Ok(Html(html))
     }
 }

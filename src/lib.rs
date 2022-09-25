@@ -1,3 +1,4 @@
+pub mod html;
 pub mod markdown;
 
 use std::path::Path;
