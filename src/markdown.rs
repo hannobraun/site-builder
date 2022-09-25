@@ -15,15 +15,19 @@ impl Markdown {
 
         Ok(Self(markdown))
     }
+
+    pub async fn parse(&self) -> anyhow::Result<String> {
+        let parser = Parser::new(&self.0);
+
+        let mut html = String::new();
+        push_html(&mut html, parser);
+
+        Ok(html)
+    }
 }
 
 pub async fn parse_markdown(path: impl AsRef<Path>) -> anyhow::Result<String> {
     let markdown = Markdown::read(path).await?;
-
-    let parser = Parser::new(&markdown.0);
-
-    let mut html = String::new();
-    push_html(&mut html, parser);
-
+    let html = markdown.parse().await?;
     Ok(html)
 }
