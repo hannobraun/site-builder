@@ -24,6 +24,6 @@ impl Markdown {
         let mut html = String::new();
         push_html(&mut html, parser);
 
-        Ok(Html(html))
+        Ok(Html::from_string(html))
     }
 }
