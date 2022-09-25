@@ -22,10 +22,10 @@ pub async fn render_template(
 }
 
 pub async fn write_html(
-    file: impl AsRef<Path>,
+    path: impl AsRef<Path>,
     html: &Html,
 ) -> anyhow::Result<()> {
-    let output_file = file.as_ref().canonicalize()?;
+    let output_file = path.as_ref().canonicalize()?;
     File::create(&output_file)
         .await?
         .write_all(html.as_str().as_bytes())
