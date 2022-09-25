@@ -13,7 +13,7 @@ pub async fn render_template(
     content: &Html,
 ) -> anyhow::Result<String> {
     let mut context = Context::new();
-    context.insert("content", &content.0);
+    context.insert("content", content.as_str());
 
     let tera = Tera::new(dir)?;
     let html = tera.render(name, &context)?;
