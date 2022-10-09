@@ -12,7 +12,7 @@ impl Template {
         Self { directory, name }
     }
 
-    pub async fn render_template(self, content: &Html) -> anyhow::Result<Html> {
+    pub async fn render(self, content: &Html) -> anyhow::Result<Html> {
         let mut context = Context::new();
         context.insert("content", content.as_str());
 
