@@ -1,4 +1,4 @@
-use tera::{Context, Tera};
+use tera::Tera;
 
 use crate::html::Html;
 
@@ -13,7 +13,7 @@ impl Template {
     }
 
     pub async fn render(self, content: &Html) -> anyhow::Result<Html> {
-        let mut context = Context::new();
+        let mut context = tera::Context::new();
         context.insert("content", content.as_str());
 
         let tera = Tera::new(self.directory)?;
